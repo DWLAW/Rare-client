@@ -9,6 +9,24 @@ import {
 } from 'react-bootstrap';
 import { signOut } from '../utils/auth';
 
+const [rareUserId, setRareUserId] = useState(null);
+
+useEffect(() => {
+  // Check Firebase auth and fetch RareUser ID
+  const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      // User is signed in, fetch RareUser ID
+      checkUser(user.uid).then((data) => {
+        setRareUserId(data.id); // Assumes `data.id` is the RareUser ID returned from the backend
+      });
+    } else {
+      setRareUserId(null); // No user logged in
+    }
+  });
+
+  return () => unsubscribe();
+}, []);
+
 export default function NavBar() {
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
@@ -23,14 +41,16 @@ export default function NavBar() {
             <Link passHref href="/">
               <Nav.Link>Home</Nav.Link>
             </Link>
-            <Link passHref href="/post/posts">
-              <Nav.Link>Posts</Nav.Link>
+
+            <Link passHref href="/posts">
+              <Nav.Link>All Posts</Nav.Link>
             </Link>
-            <Link passHref href="/category/categories">
-              <Nav.Link>Categories</Nav.Link>
+            <Link passHref href={`/posts?user_id=${rareUserId}`}>
+              <Nav.Link>My Posts</Nav.Link>
             </Link>
-            <Link passHref href="/profile/profile">
-              <Nav.Link>Profile</Nav.Link>
+            <Link passHref href="/categories">
+              <Nav.Link>Category Manager</Nav.Link>
+
             </Link>
             <Button variant="danger" onClick={signOut}>
               Sign Out
