@@ -14,6 +14,18 @@ const getCategories = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const getSingleCategory = (id) => new Promise((resolve, reject) => {
+  fetch(`${endpoint}/categories/${id}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => resolve((data)))
+    .catch(reject);
+});
+
 const createCategory = (payload) => new Promise((resolve, reject) => {
   fetch(`${endpoint}/categories`, {
     method: 'POST',
@@ -53,5 +65,5 @@ const deleteCategory = (id) => new Promise((resolve, reject) => {
 });
 
 export {
-  getCategories, createCategory, updateCategory, deleteCategory,
+  getCategories, createCategory, updateCategory, deleteCategory, getSingleCategory,
 };
