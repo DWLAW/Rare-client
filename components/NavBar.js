@@ -1,33 +1,33 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import {
-  Navbar, //
+  Navbar,
   Container,
-  Nav,
-  Button,
+  Nav, Button,
 } from 'react-bootstrap';
-import { signOut } from '../utils/auth';
-
-const [rareUserId, setRareUserId] = useState(null);
-
-useEffect(() => {
-  // Check Firebase auth and fetch RareUser ID
-  const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      // User is signed in, fetch RareUser ID
-      checkUser(user.uid).then((data) => {
-        setRareUserId(data.id); // Assumes `data.id` is the RareUser ID returned from the backend
-      });
-    } else {
-      setRareUserId(null); // No user logged in
-    }
-  });
-
-  return () => unsubscribe();
-}, []);
+import firebase from 'firebase';
+import { signOut, checkUser } from '../utils/auth';
 
 export default function NavBar() {
+  const [rareUserId, setRareUserId] = useState(null);
+
+  useEffect(() => {
+  // Check Firebase auth and fetch RareUser ID
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+      // User is signed in, fetch RareUser ID
+        checkUser(user.uid).then((data) => {
+          setRareUserId(data.id); // Assumes `data.id` is the RareUser ID returned from the backend
+        });
+      } else {
+        setRareUserId(null); // No user logged in
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   return (
     <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
       <Container>
