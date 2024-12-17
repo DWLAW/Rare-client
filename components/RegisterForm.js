@@ -13,9 +13,13 @@ function RegisterForm({ obj, user, updateUser }) {
   useEffect(() => {
     if (!obj.id) {
       setFormData({
+        first_name: '',
+        last_name: '',
         bio: '',
+        profile_image_url: '',
+        email: '',
         uid: user.uid,
-        name: '',
+
       });
     } else {
       setFormData({ ...obj, id: obj.id });
@@ -35,12 +39,12 @@ function RegisterForm({ obj, user, updateUser }) {
     <Form onSubmit={handleSubmit}>
       <Form.Group className="mb-3" controlId="first_name">
         <Form.Label>first name</Form.Label>
-        <Form.Control as="textarea" name="name" required placeholder="Enter your Name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} value={formData.first_name} />
+        <Form.Control as="textarea" name="first_name" required placeholder="Enter your Name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} value={formData.first_name} />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="last_name">
         <Form.Label>last name</Form.Label>
-        <Form.Control as="textarea" name="name" required placeholder="Enter your Name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} value={formData.last_name} />
+        <Form.Control as="textarea" name="last_name" required placeholder="Enter your Name" onChange={({ target }) => setFormData((prev) => ({ ...prev, [target.name]: target.value }))} value={formData.last_name} />
       </Form.Group>
 
       <Form.Group className="mb-3" controlId="formBio">
@@ -91,3 +95,4 @@ RegisterForm.defaultProps = {
   },
 
 };
+export default RegisterForm;
