@@ -33,17 +33,17 @@ export default function Profile() {
     <>
       <Card style={{ width: '15rem', marginTop: '20px' }}>
         <Card.Body>
-          <Card.Title>{userDetails.name}</Card.Title>
-          {/* <Link href="/profile/new" passHref>
+          <Card.Title>{userDetails.first_name}</Card.Title>
+          <Link href={`/profile/edit/${user.id}`} passHref>
             <Button variant="primary" className="m-2">Edit</Button>
-          </Link> */}
+          </Link>
           <p className="card-text bold">Bio: {userDetails.bio}</p>
           <div style={{ display: 'flex', justifyContent: 'right' }}>
             {userDetails.uid === user.uid ? <Link href={`/profile/edit/${user.uid}`} passHref><Button variant="secondary">Edit</Button></Link> : ''}
           </div>
         </Card.Body>
       </Card>
-      <h5 style={{ marginTop: '30px' }}>Posts by {user.name}:</h5>
+      <h5 style={{ marginTop: '30px' }}>Posts by {user.first_name}:</h5>
       <div className="d-flex flex-wrap" style={{ width: '100%', gap: '20px' }}>
         {posts.length === 0 && 'You have not posted yet...'}
         {posts.map((post) => (

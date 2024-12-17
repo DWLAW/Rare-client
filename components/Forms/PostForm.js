@@ -125,7 +125,8 @@ PostForm.propTypes = {
     content: PropTypes.string,
     user: PropTypes.shape({
       id: PropTypes.number,
-      name: PropTypes.string,
+      first_name: PropTypes.string,
+      last_name: PropTypes.string,
       uid: PropTypes.string,
       bio: PropTypes.string,
     }),
