@@ -4,7 +4,7 @@ import 'firebase/auth';
 const endpoint = 'http://localhost:8000/rareusers';
 
 const checkUser = (uid) => new Promise((resolve, reject) => {
-  fetch('http://localhost:8000/checkuser', {
+  fetch('http://localhost:8000/', {
     method: 'POST',
     body: JSON.stringify({
       uid,
