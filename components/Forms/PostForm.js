@@ -7,10 +7,12 @@ import { createPost, updatePost } from '../../api/postData';
 import getCategories from '../../api/categoryData';
 
 const initialState = {
+  category: '',
   title: '',
+  publication_date: '',
   image_url: '',
   content: '',
-  category: 0,
+  approved: true,
 };
 
 export default function PostForm({ obj }) {
@@ -117,25 +119,25 @@ export default function PostForm({ obj }) {
     </Form>
   );
 }
+
 PostForm.propTypes = {
   obj: PropTypes.shape({
     id: PropTypes.number,
-    title: PropTypes.string,
-    image_url: PropTypes.string,
-    content: PropTypes.string,
-    user: PropTypes.shape({
-      id: PropTypes.number,
-      first_name: PropTypes.string,
-      last_name: PropTypes.string,
-      uid: PropTypes.string,
-      bio: PropTypes.string,
-    }),
+    user: PropTypes.number,
     category: PropTypes.shape({
       id: PropTypes.number,
       label: PropTypes.string,
     }),
+    title: PropTypes.string,
+    // publication_date: PropTypes.instanceOf(Date),
+    publication_date: PropTypes.string,
+    image_url: PropTypes.string,
+    content: PropTypes.string,
+    approved: PropTypes.bool,
   }),
+  // onSubmit: PropTypes.func.isRequired,
 };
+
 PostForm.defaultProps = {
   obj: initialState,
 };
