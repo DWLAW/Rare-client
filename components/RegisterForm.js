@@ -76,7 +76,7 @@ function RegisterForm({ obj, user, updateUser }) {
           type="text"
           name="last_name"
           required
-          placeholder="Enter your Last Name"
+          placeholder="Enter your lastName"
           onChange={handleChange}
           value={formData.last_name}
         />
