@@ -1,10 +1,9 @@
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
-const endpoint = 'http://localhost:8000/rareusers';
+import { clientCredentials } from './client';
 
 const checkUser = (uid) => new Promise((resolve, reject) => {
-  fetch('http://localhost:8000/', {
+  fetch(`${clientCredentials.databaseURL}/checkuser`, {
     method: 'POST',
     body: JSON.stringify({
       uid,
@@ -19,7 +18,7 @@ const checkUser = (uid) => new Promise((resolve, reject) => {
 });
 
 const registerUser = (userInfo) => new Promise((resolve, reject) => {
-  fetch(`${endpoint}`, {
+  fetch(`${clientCredentials.databaseURL}/register`, {
     method: 'POST',
     body: JSON.stringify(userInfo),
     headers: {
