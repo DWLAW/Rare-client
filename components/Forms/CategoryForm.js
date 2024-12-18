@@ -1,18 +1,25 @@
 import PropTypes from 'prop-types';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import { useAuth } from '../../utils/context/authContext';
 import { createCategory, updateCategory } from '../../api/categoryData';
 
 const initialState = {
+  id: '',
   label: '',
 };
 
-export default function CategoryForm({ obj }) {
+export default function CategoryForm({ obj, onSubmit }) {
   const [formInput, setFormInput] = useState(initialState);
   const router = useRouter();
-  const { user } = useAuth();
+
+  useEffect(() => {
+    if (obj.id) {
+      setFormInput(obj);
+    } else {
+      setFormInput(initialState);
+    }
+  }, [obj]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,16 +28,21 @@ export default function CategoryForm({ obj }) {
       [name]: value,
     }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {
-      ...formInput,
-      uid: user.uid,
-    };
-    if (obj?.id) {
-      updateCategory(payload).then(() => router.push('/'));
+    if (obj.id) {
+      const updatedCategory = {
+        id: obj.id,
+        label: formInput.label,
+      };
+      updateCategory(updatedCategory).then(() => router.push('/category'));
     } else {
-      createCategory(payload).then(router.push('/'));
+      const payload = formInput.label;
+      createCategory(payload).then(() => {
+        setFormInput(initialState);
+        onSubmit();
+      });
     }
   };
   return (
@@ -59,6 +71,7 @@ CategoryForm.propTypes = {
     id: PropTypes.number,
     label: PropTypes.string,
   }),
+  onSubmit: PropTypes.func.isRequired,
 };
 
 CategoryForm.defaultProps = {

@@ -42,13 +42,13 @@ export default function NavBar() {
               <Nav.Link>Home</Nav.Link>
             </Link>
 
-            <Link passHref href="/posts">
+            <Link passHref href="/post/posts">
               <Nav.Link>All Posts</Nav.Link>
             </Link>
-            <Link passHref href={`/posts?user_id=${rareUserId}`}>
+            <Link passHref href={`/post/posts?user_id=${rareUserId}`}>
               <Nav.Link>My Posts</Nav.Link>
             </Link>
-            <Link passHref href="/categories">
+            <Link passHref href="/category/categories">
               <Nav.Link>Category Manager</Nav.Link>
 
             </Link>
