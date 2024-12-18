@@ -4,7 +4,7 @@ import { React, useEffect, useState } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { useAuth } from '../../utils/context/authContext';
 import { createPost, updatePost } from '../../api/postData';
-import getCategories from '../../api/categoryData';
+import { getCategories } from '../../api/categoryData'; // Corrected Import
 
 const initialState = {
   category: '',
@@ -41,6 +41,7 @@ export default function PostForm({ obj }) {
       [name]: value,
     }));
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const payload = {
@@ -53,10 +54,11 @@ export default function PostForm({ obj }) {
       createPost(payload).then(router.push('/'));
     }
   };
+
   return (
     <Form onSubmit={handleSubmit}>
       <h2 className="text-white mt-5">{obj.id ? 'Update' : 'Create'} Post</h2>
-      {/* TITLE INPUT  */}
+
       <FloatingLabel controlId="floatingInput1" label="Post Title" className="mb-3">
         <Form.Control
           type="text"
@@ -67,7 +69,7 @@ export default function PostForm({ obj }) {
           required
         />
       </FloatingLabel>
-      {/* IMAGE INPUT  */}
+
       <FloatingLabel controlId="floatingInput2" label="Post Image" className="mb-3">
         <Form.Control
           type="url"
@@ -78,10 +80,9 @@ export default function PostForm({ obj }) {
           required
         />
       </FloatingLabel>
-      {/* category SELECT  */}
+
       <FloatingLabel controlId="floatingSelect" label="category">
         <Form.Select
-          // aria-label="category"
           name="category"
           onChange={handleChange}
           className="mb-3"
@@ -89,33 +90,27 @@ export default function PostForm({ obj }) {
           required
         >
           <option value="">Select a category</option>
-          {
-            categories.map((category) => (
-              <option
-                key={category.id}
-                value={category.id}
-              >
-                {category.label}
-              </option>
-            ))
-          }
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.label}
+            </option>
+          ))}
         </Form.Select>
       </FloatingLabel>
-      {/* content TEXTAREA  */}
+
       <FloatingLabel controlId="floatingTextarea" label="content" className="mb-3">
         <Form.Control
           as="textarea"
           placeholder="content"
           style={{ height: '100px' }}
           name="content"
-          value={formInput.description}
+          value={formInput.content}
           onChange={handleChange}
           required
         />
       </FloatingLabel>
-      {/* SUBMIT BUTTON  */}
-      <Button type="submit">{obj.id ? 'Update' : 'Create'} Post</Button>
 
+      <Button type="submit">{obj.id ? 'Update' : 'Create'} Post</Button>
     </Form>
   );
 }
@@ -129,13 +124,11 @@ PostForm.propTypes = {
       label: PropTypes.string,
     }),
     title: PropTypes.string,
-    // publication_date: PropTypes.instanceOf(Date),
     publication_date: PropTypes.string,
     image_url: PropTypes.string,
     content: PropTypes.string,
     approved: PropTypes.bool,
   }),
-  // onSubmit: PropTypes.func.isRequired,
 };
 
 PostForm.defaultProps = {

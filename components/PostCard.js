@@ -8,46 +8,89 @@ import { useAuth } from '../utils/context/authContext';
 import { deletePost } from '../api/postData';
 
 function PostCard({ postObj, onUpdate }) {
+  const { user } = useAuth();
+
   const deleteThisPost = () => {
     if (window.confirm(`Delete ${postObj.title}?`)) {
       deletePost(postObj.id).then(() => onUpdate());
     }
   };
-  const { user } = useAuth();
+
+  const isUserOwner = user?.uid === postObj?.user?.uid;
+  const userLink = postObj.user?.uid ? `/profile/${postObj.user.uid}` : null;
 
   return (
     <Card className="post-card" style={{ width: '18rem', margin: '10px' }}>
       <Card.Body>
         <Card.Title>{postObj.title}</Card.Title>
-        <div style={{
-          height: '280', width: '280', display: 'flex', margin: '10',
-        }}
+
+        <div
+          style={{
+            height: '280px',
+            width: '280px',
+            display: 'flex',
+            margin: '10px',
+          }}
         >
-          <Card.Img variant="top" src={postObj.image_url} alt={postObj.title} style={{ height: '280px', width: '280px' }} />
+          <Card.Img
+            variant="top"
+            src={postObj.image_url}
+            alt={postObj.title}
+            style={{ height: '280px', width: '280px' }}
+          />
         </div>
-        <Card.Subtitle style={
-            {
-              marginTop: '5px', textAlign: 'right', fontSize: '18px', fontWeight: '600', color: '#CDB47B',
-            }
-              }
-        >{postObj.category.label}
+
+        <Card.Subtitle
+          style={{
+            marginTop: '5px',
+            textAlign: 'right',
+            fontSize: '18px',
+            fontWeight: '600',
+            color: '#CDB47B',
+          }}
+        >
+          {postObj.category.label}
         </Card.Subtitle>
-        {/* DYNAMIC LINK TO VIEW THE post DETAILS  */}
-        <ButtonGroup style={{ width: '100%', display: 'flex', alignItems: 'bottom' }}>
+
+        <ButtonGroup
+          style={{
+            width: '100%',
+            display: 'flex',
+            alignItems: 'bottom',
+          }}
+        >
           <Link href={`/post/${postObj.id}`} passHref>
             <Button className="post-card-button">View</Button>
           </Link>
-          {user.uid === postObj.user.uid ? (
-            <Link href={`/post/edit/${postObj.id}`} passHref>
-              <Button className="post-card-button">Edit</Button>
-            </Link>
-          ) : ''}
-          {user.uid === postObj.user.uid ? <Button className="delete-button post-card-button" onClick={deleteThisPost}>Delete</Button> : ''}
+
+          {isUserOwner && (
+            <>
+              <Link href={`/post/edit/${postObj.id}`} passHref>
+                <Button className="post-card-button">Edit</Button>
+              </Link>
+              <Button
+                className="delete-button post-card-button"
+                onClick={deleteThisPost}
+              >
+                Delete
+              </Button>
+            </>
+          )}
         </ButtonGroup>
-        <Card.Footer style={{
-          fontSize: '12px', textAlign: 'right', padding: '0', marginTop: '5px',
-        }}
-        >Posted by <Link href={`/profile/${postObj.user?.uid}`}>{postObj.user?.name}</Link>
+
+        <Card.Footer
+          style={{
+            fontSize: '12px',
+            textAlign: 'right',
+            padding: '0',
+            marginTop: '5px',
+          }}
+        >
+          {userLink ? (
+            <Link href={userLink}>{postObj.user?.name}</Link>
+          ) : (
+            <span>{postObj.user?.name}</span>
+          )}
         </Card.Footer>
       </Card.Body>
     </Card>
@@ -74,4 +117,5 @@ PostCard.propTypes = {
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
+
 export default PostCard;
